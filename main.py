@@ -129,4 +129,34 @@ def expandNode(node):
     return retList
 
 
+def bfs(puzzle):
+    nodesQueue=[]
 
+    #root of tree
+    nodesQueue.append(Node(0,puzzle,None))
+    while True:
+        # no solution
+        if len(nodesQueue) == 0:
+            return None
+
+        # take the node from front of queue
+        node = nodesQueue.pop(0)
+
+        # if node is goal,return moves
+        if node.data == solvedPuzzle:
+            moves = []
+            while node.parent != None:
+                moves.append(node)
+                node = node.parent
+            return moves
+
+        # if node is not goal,expand node
+        else:
+            nodesQueue.extend(expandNode(node))
+
+
+if __name__ == '__main__':
+    currentPuzzle = readFromFile("input.txt")
+    moves = bfs(currentPuzzle)
+    for state in reversed(moves):
+        printPuzzle(state.data)
