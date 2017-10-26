@@ -130,10 +130,10 @@ def expandNode(node):
 
 
 def bfs(puzzle):
-    nodesQueue=[]
+    nodesQueue = []
 
-    #root of tree
-    nodesQueue.append(Node(0,puzzle,None))
+    # root of tree
+    nodesQueue.append(Node(0, puzzle, None))
     while True:
         # no solution
         if len(nodesQueue) == 0:
@@ -155,8 +155,36 @@ def bfs(puzzle):
             nodesQueue.extend(expandNode(node))
 
 
+def dfs(puzzle, depth=30):
+    nodeQueue = []
+
+    depth_limit = depth
+
+    nodeQueue.append(Node(0, puzzle, None))
+
+    while True:
+        if(len(nodeQueue)==0):
+            return None
+
+        node = nodeQueue.pop(0)
+
+        if node.data == solvedPuzzle:
+            moves = []
+            while node.parent != None:
+                moves.append(node)
+                node = node.parent
+            return moves
+
+        if node.depth < depth_limit:
+            expanded_nodes = expandNode(node)
+            expanded_nodes.extend(nodeQueue)
+            nodeQueue = expanded_nodes
+
+
 if __name__ == '__main__':
     currentPuzzle = readFromFile("input.txt")
     moves = bfs(currentPuzzle)
+    #moves=dfs(currentPuzzle,30)
+    printPuzzle(currentPuzzle)
     for state in reversed(moves):
         printPuzzle(state.data)
