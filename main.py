@@ -163,7 +163,7 @@ def dfs(puzzle, depth=30):
     nodeQueue.append(Node(0, puzzle, None))
 
     while True:
-        if(len(nodeQueue)==0):
+        if(len(nodeQueue) == 0):
             return None
 
         node = nodeQueue.pop(0)
@@ -181,10 +181,18 @@ def dfs(puzzle, depth=30):
             nodeQueue = expanded_nodes
 
 
+def ids(puzzle, depth=30):
+    for i in range(depth):
+        result = dfs(puzzle, i)
+        if result != None:
+            return result
+
+
 if __name__ == '__main__':
     currentPuzzle = readFromFile("input.txt")
-    moves = bfs(currentPuzzle)
-    #moves=dfs(currentPuzzle,30)
+    #moves = bfs(currentPuzzle)
+    # moves=dfs(currentPuzzle,30)
+    moves = ids(currentPuzzle, 30)
     printPuzzle(currentPuzzle)
     for state in reversed(moves):
         printPuzzle(state.data)
