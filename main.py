@@ -128,11 +128,30 @@ class Node:
         self.data = nodeData
         self.parent = nodeParent
         self.f = 0
+        self.manhattan = 0
         self.compute_f()
+        self.manhattanDistance()
 
     def compute_f(self):
+        # f(n)=g(n)+h(n)
         if self.data != None:
-            self.f = self.depth + h(self.data)
+            self.f = self.depth + self.manhattan
+
+    def manhattanDistance(self):
+        # compute manhattan distance
+        # a huristic for this problem
+        if self.data != None:
+            location = {"row": 0, "col": 0}
+            correctLocation = {"row": 0, "col": 0}
+            totalManhattanDistance = 0
+            for i in range(0, 3):
+                for j in range(0, 3):
+                    findLocation(self.data, self.data[i][j], location)
+                    findLocation(
+                        solvedPuzzle, self.data[i][j], correctLocation)
+                    totalManhattanDistance += abs(location["row"] - correctLocation["row"]) + abs(
+                        location["col"] - correctLocation["col"])
+            self.manhattan = totalManhattanDistance
 
 
 def expandNode(node):
@@ -204,9 +223,6 @@ def dfs(puzzle, depth=100):
 
         if node.depth < depth_limit:
             # extend node to queue
-            """expanded_nodes = expandNode(node)
-            expanded_nodes.extend(nodesQueue)
-            nodesQueue = expanded_nodes"""
             nodesQueue.extend(expandNode(node))
 
 
@@ -224,8 +240,7 @@ def a_star(puzzle):
         if len(nodesQueue) == 0:
             return None
 
-        # nodesQueue.sort(cmp)
-
+        # sort queue due to f
         nodesQueue.sort(key=lambda x: x.f)
 
         node = nodesQueue.pop(0)
@@ -241,17 +256,13 @@ def a_star(puzzle):
             nodesQueue.extend(expandNode(node))
 
 
-def h(puzzle):
+"""def h(puzzle):
     score = 0
     for i in range(0, 3):
         for j in range(0, 3):
             if puzzle[i][j] != solvedPuzzle[i][j]:
                 score += 1
-    return score
-
-
-"""def cmp(x, y):
-    return (x.depth + h(x.data)) - (y.depth + h(y.data))"""
+    return score"""
 
 
 if __name__ == '__main__':
