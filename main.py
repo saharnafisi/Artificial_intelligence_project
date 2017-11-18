@@ -114,10 +114,11 @@ class Node:
         self.depth = nodeDepth
         self.data = nodeData
         self.parent = nodeParent
-        self.f = 0
+        self.f = self.compute_f()
 
     def compute_f(self):
-        self.f = (self.depth + h(self.data))
+        if self.data != None:
+            return self.depth + h(self.data)
 
 
 def expandNode(node):
@@ -206,11 +207,11 @@ def a_star(puzzle):
     nodesQueue = []
     nodesQueue.append(Node(0, puzzle, None))
     while True:
-        if(len(nodesQueue) == 0):
+        if len(nodesQueue) == 0:
             return None
 
-        # nodeQueue.sort(cmp)
-        nodesQueue.sort(key=lambda x: x.f)
+        # nodesQueue.sort(cmp)
+        #nodesQueue.sort(key=lambda x: x.compute_f)
 
         node = nodesQueue.pop(0)
 
@@ -227,15 +228,15 @@ def a_star(puzzle):
 
 def h(puzzle):
     score = 0
-    for i in range(3):
-        for j in range(3):
+    for i in range(0, 3):
+        for j in range(0, 3):
             if puzzle[i][j] != solvedPuzzle[i][j]:
                 score += 1
     return score
 
 
-def cmp(x, y):
-    return (x.depth + h(x.data)) - (y.depth + h(y.data))
+"""def cmp(x, y):
+    return (x.depth + h(x.data)) - (y.depth + h(y.data))"""
 
 
 if __name__ == '__main__':
