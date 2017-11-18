@@ -211,7 +211,7 @@ def a_star(puzzle):
             return None
 
         # nodesQueue.sort(cmp)
-        #nodesQueue.sort(key=lambda x: x.compute_f)
+        nodesQueue.sort(key=lambda x: x.f)
 
         node = nodesQueue.pop(0)
 
