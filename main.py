@@ -1,5 +1,7 @@
 import copy
 import bisect
+import timeit
+
 # Global Variables:
 solvedPuzzle = [
     ['1', '2', '3'],
@@ -25,9 +27,8 @@ def findStar(puzzle, starLocation):
                 starLocation["row"] = row
                 starLocation["col"] = column
 
+
 # return location of a digit in puzzle
-
-
 def findLocation(puzzle, number, location):
     for row in range(0, 3):
         for column in range(0, 3):
@@ -113,7 +114,10 @@ class Node:
         self.depth = nodeDepth
         self.data = nodeData
         self.parent = nodeParent
-        #self.manhattan = 0
+        self.f = 0
+
+    def compute_f(self):
+        self.f = (self.depth + h(self.data))
 
 
 def expandNode(node):
@@ -155,30 +159,40 @@ def bfs(puzzle):
             nodesQueue.extend(expandNode(node))
 
 
-def dfs(puzzle, depth=30):
-    nodeQueue = []
+def dfs(puzzle, depth=100):
 
+    nodesQueue = []
+
+    # maximum depth to search
     depth_limit = depth
 
-    nodeQueue.append(Node(0, puzzle, None))
+    # append first node to queue
+    nodesQueue.append(Node(0, puzzle, None))
 
     while True:
-        if(len(nodeQueue) == 0):
+        # never this state accure
+        if(len(nodesQueue) == 0):
             return None
 
-        node = nodeQueue.pop(0)
+        # pop first node in queue
+        node = nodesQueue.pop(0)
 
         if node.data == solvedPuzzle:
+
+            # an array for store moves
             moves = []
+
             while node.parent != None:
                 moves.append(node)
                 node = node.parent
             return moves
 
         if node.depth < depth_limit:
-            expanded_nodes = expandNode(node)
-            expanded_nodes.extend(nodeQueue)
-            nodeQueue = expanded_nodes
+            # extend node to queue
+            """expanded_nodes = expandNode(node)
+            expanded_nodes.extend(nodesQueue)
+            nodesQueue = expanded_nodes"""
+            nodesQueue.extend(expandNode(node))
 
 
 def ids(puzzle, depth=30):
@@ -188,11 +202,50 @@ def ids(puzzle, depth=30):
             return result
 
 
+def a_star(puzzle):
+    nodesQueue = []
+    nodesQueue.append(Node(0, puzzle, None))
+    while True:
+        if(len(nodesQueue) == 0):
+            return None
+
+        # nodeQueue.sort(cmp)
+        nodesQueue.sort(key=lambda x: x.f)
+
+        node = nodesQueue.pop(0)
+
+        if node.data == solvedPuzzle:
+            moves = []
+
+            while node.parent != None:
+                moves.append(node)
+                node = node.parent
+            return moves
+        else:
+            nodesQueue.extend(expandNode(node))
+
+
+def h(puzzle):
+    score = 0
+    for i in range(3):
+        for j in range(3):
+            if puzzle[i][j] != solvedPuzzle[i][j]:
+                score += 1
+    return score
+
+
+def cmp(x, y):
+    return (x.depth + h(x.data)) - (y.depth + h(y.data))
+
+
 if __name__ == '__main__':
+    start = timeit.default_timer()
     currentPuzzle = readFromFile("input.txt")
-    #moves = bfs(currentPuzzle)
-    # moves=dfs(currentPuzzle,30)
-    moves = ids(currentPuzzle, 30)
+    moves = a_star(currentPuzzle)
+    #moves = dfs(currentPuzzle, 30)
+    #moves = ids(currentPuzzle, 30)
     printPuzzle(currentPuzzle)
     for state in reversed(moves):
         printPuzzle(state.data)
+    stop = timeit.default_timer()
+    print(stop - start)
