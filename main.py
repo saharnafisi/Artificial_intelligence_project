@@ -46,6 +46,19 @@ def printPuzzle(puzzle):
     print("---------------------------")
 
 
+def IsSolvable(puzzle):
+    inversions = 0
+    for i in range(0, 3):
+        for j in range(0, 3):
+            if puzzle[i][j] != solvedPuzzle[i][j]:
+                inversions = inversions + 1
+
+    if(inversions % 2 == 0):
+        return False
+    else:
+        return True
+
+
 def moveUp(puzzle):
     starLocation = {"row": 0, "col": 0}
     findStar(puzzle, starLocation)
@@ -244,11 +257,14 @@ def h(puzzle):
 if __name__ == '__main__':
     start = timeit.default_timer()
     currentPuzzle = readFromFile("input.txt")
-    moves = a_star(currentPuzzle)
-    #moves = dfs(currentPuzzle, 30)
-    #moves = ids(currentPuzzle, 30)
-    printPuzzle(currentPuzzle)
-    for state in reversed(moves):
-        printPuzzle(state.data)
-    stop = timeit.default_timer()
-    print(stop - start)
+    if(IsSolvable(currentPuzzle)):
+        moves = a_star(currentPuzzle)
+        #moves = dfs(currentPuzzle, 30)
+        #moves = ids(currentPuzzle, 30)
+        printPuzzle(currentPuzzle)
+        for state in reversed(moves):
+            printPuzzle(state.data)
+        stop = timeit.default_timer()
+        print(stop - start)
+    else:
+        print("This puzzle has no soloution...")
