@@ -115,6 +115,7 @@ class Node:
         self.data = nodeData
         self.parent = nodeParent
         self.f = 0
+        self.compute_f()
 
     def compute_f(self):
         if self.data != None:
