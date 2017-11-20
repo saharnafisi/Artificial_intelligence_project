@@ -4,9 +4,9 @@ import timeit
 
 # Global Variables:
 solvedPuzzle = [
-    ['1', '2', '3'],
-    ['4', '5', '6'],
-    ['7', '8', '*'],
+    ['*', '1', '2'],
+    ['3', '4', '5'],
+    ['6', '7', '8'],
 ]
 
 
@@ -265,17 +265,54 @@ def a_star(puzzle):
     return score"""
 
 
+def printSoloution(puzzle, moves):
+    printPuzzle(puzzle)
+    for state in reversed(moves):
+        printPuzzle(state.data)
+
+
 if __name__ == '__main__':
-    start = timeit.default_timer()
-    currentPuzzle = readFromFile("input.txt")
-    if(IsSolvable(currentPuzzle)):
-        moves = a_star(currentPuzzle)
-        #moves = dfs(currentPuzzle, 30)
-        #moves = ids(currentPuzzle, 30)
-        printPuzzle(currentPuzzle)
-        for state in reversed(moves):
-            printPuzzle(state.data)
-        stop = timeit.default_timer()
-        print(stop - start)
-    else:
-        print("This puzzle has no soloution...")
+    while True:
+        input_file = input("Enter input file name please:")
+        currentPuzzle = readFromFile(input_file)
+        if(IsSolvable(currentPuzzle)):
+            search_method = input("""Enter number of search method you want:  
+            1.bfs
+            2.dfs
+            3.ids
+            4.a star
+            """)
+
+            if(search_method == "1"):
+                start = timeit.default_timer()
+                moves = bfs(currentPuzzle)
+                stop = timeit.default_timer()
+                printSoloution(currentPuzzle, moves)
+                print(stop - start)
+                break
+            elif(search_method == "2"):
+                start = timeit.default_timer()
+                moves = dfs(currentPuzzle)
+                stop = timeit.default_timer()
+                printSoloution(currentPuzzle, moves)
+                print(stop - start)
+                break
+            elif(search_method == "3"):
+                start = timeit.default_timer()
+                moves = ids(currentPuzzle)
+                stop = timeit.default_timer()
+                printSoloution(currentPuzzle, moves)
+                print(stop - start)
+                break
+            elif(search_method == "4"):
+                start = timeit.default_timer()
+                moves = a_star(currentPuzzle)
+                stop = timeit.default_timer()
+                printSoloution(currentPuzzle, moves)
+                print(stop - start)
+                break
+            else:
+                print("invalid input...try again")
+        else:
+            print("This puzzle has no soloution...")
+            break
