@@ -48,12 +48,23 @@ def printPuzzle(puzzle):
 
 def IsSolvable(puzzle):
     inversions = 0
+
+    linear_puzzle = []
+
+    # convert puzzle to a linear list and remove '*' from it
     for i in range(0, 3):
         for j in range(0, 3):
-            if puzzle[i][j] != solvedPuzzle[i][j]:
+            if puzzle[i][j] != "*":
+                linear_puzzle.append(puzzle[i][j])
+
+    # compute number of inversions
+    for i in range(0, 8):
+        for j in range(i + 1, 8):
+            if linear_puzzle[j] < linear_puzzle[i]:
                 inversions = inversions + 1
 
-    if(inversions % 2 == 0):
+    # check is inversions odd or even
+    if(inversions % 2 == 1):
         return False
     else:
         return True
