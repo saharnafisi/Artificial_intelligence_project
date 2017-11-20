@@ -9,6 +9,12 @@ solvedPuzzle = [
     ['7', '8', '*'],
 ]
 
+"""solvedPuzzle = [
+    ['*', '1', '2'],
+    ['3', '4', '5'],
+    ['6', '7', '8'],
+]"""
+
 
 def readFromFile(file_name):
     array = []
@@ -140,8 +146,9 @@ class Node:
         self.parent = nodeParent
         self.f = 0
         self.manhattan = 0
-        self.compute_f()
+
         self.manhattanDistance()
+        self.compute_f()
 
     def compute_f(self):
         # f(n)=g(n)+h(n)
