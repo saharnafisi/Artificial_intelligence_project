@@ -301,36 +301,24 @@ if __name__ == '__main__':
             4.a star
             """)
 
+            start = timeit.default_timer()
             if(search_method == "1"):
-                start = timeit.default_timer()
                 moves = bfs(currentPuzzle)
-                stop = timeit.default_timer()
                 printSoloution(currentPuzzle, moves)
-                print(stop - start)
-                break
             elif(search_method == "2"):
-                start = timeit.default_timer()
                 moves = dfs(currentPuzzle)
-                stop = timeit.default_timer()
                 printSoloution(currentPuzzle, moves)
-                print(stop - start)
-                break
             elif(search_method == "3"):
-                start = timeit.default_timer()
                 moves = ids(currentPuzzle)
-                stop = timeit.default_timer()
                 printSoloution(currentPuzzle, moves)
-                print(stop - start)
-                break
             elif(search_method == "4"):
-                start = timeit.default_timer()
                 moves = a_star(currentPuzzle)
-                stop = timeit.default_timer()
                 printSoloution(currentPuzzle, moves)
-                print(stop - start)
-                break
+
             else:
                 print("invalid input...try again")
+            stop = timeit.default_timer()
+            print(stop - start)
         else:
             print("This puzzle has no soloution...")
             break
