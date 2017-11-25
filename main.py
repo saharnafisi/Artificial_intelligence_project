@@ -164,11 +164,12 @@ class Node:
             totalManhattanDistance = 0
             for i in range(0, 3):
                 for j in range(0, 3):
-                    findLocation(self.data, self.data[i][j], location)
-                    findLocation(
-                        solvedPuzzle, self.data[i][j], correctLocation)
-                    totalManhattanDistance += abs(location["row"] - correctLocation["row"]) + abs(
-                        location["col"] - correctLocation["col"])
+                    if self.data[i][j] != "*":
+                        findLocation(self.data, self.data[i][j], location)
+                        findLocation(
+                            solvedPuzzle, self.data[i][j], correctLocation)
+                        totalManhattanDistance += abs(location["row"] - correctLocation["row"]) + abs(
+                            location["col"] - correctLocation["col"])
             self.manhattan = totalManhattanDistance
 
 
@@ -305,15 +306,19 @@ if __name__ == '__main__':
             if(search_method == "1"):
                 moves = bfs(currentPuzzle)
                 printSoloution(currentPuzzle, moves)
+                print(len(moves))
             elif(search_method == "2"):
                 moves = dfs(currentPuzzle)
                 printSoloution(currentPuzzle, moves)
+                print(len(moves))
             elif(search_method == "3"):
                 moves = ids(currentPuzzle)
                 printSoloution(currentPuzzle, moves)
+                print(len(moves))
             elif(search_method == "4"):
                 moves = a_star(currentPuzzle)
                 printSoloution(currentPuzzle, moves)
+                print(len(moves))
 
             else:
                 print("invalid input...try again")
